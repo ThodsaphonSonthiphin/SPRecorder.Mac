@@ -70,3 +70,21 @@ exactly that reason. Explicit Save keeps one rule instead of two.
 `SPRecorder Mac design system` → **Screens / Settings — six tabs**. The two rejected
 shapes are kept as cards (`Settings — small window`, `Settings — text file only`) so
 the options are not re-proposed from memory in six months.
+
+---
+
+## Amendment — 2026-09-10. Seven tabs, not six.
+
+`sprecorder-mac-0022` adds a seventh tab, **Permissions**, after Markers. It is the home
+`sprecorder-mac-0006` promised for the permissions list and the home of Check my setup
+(`sprecorder-mac-0017`). The six tabs above are unchanged and remain the Windows parity
+this ADR chose; the seventh is the admitted support exception, not a parity tab.
+
+---
+
+## Amendment — 2026-09-10
+
+The Screen tab's **monitor picker is removed for now**: `sprecorder-mac-0021` records the
+built-in screen only, and defers external monitors because none is available to build or
+test against. Settings is **26 of 27** controls until that feature returns. The other five
+tabs are unchanged.

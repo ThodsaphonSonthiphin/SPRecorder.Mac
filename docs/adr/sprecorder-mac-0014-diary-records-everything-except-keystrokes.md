@@ -89,3 +89,17 @@ only greppable — she may well be the one reading it first.
   `CONTEXT.md`, and whether it copies or references the Windows glossary is still open under
   `adr-and-repo-strategy`. Adding one now would pre-empt that ticket.
 - **How the file reaches the developer** — `diagnostic-report-delivery`.
+
+---
+
+## Amendment — 2026-09-10. Retention now governs the diary only.
+
+`sprecorder-mac-0021` keeps a sent problem report **permanently**, in a *Problem
+reports* folder inside her recordings folder — the user's choice (*"don't clean data,
+leave it"*), made knowing this ADR rejected keep-forever. The 7-day deletion above is
+unchanged for the diary itself. What changes is the sentence *"retention is the privacy
+control here"*: it is now true of the diary, not of every copy of its contents. A report
+is governed instead by the rule her recordings already follow — visible, hers, deleted
+by her — which is why it was placed beside them rather than hidden next to the diary.
+The binding obligations this ADR placed on the send feature, and the keystroke ban,
+are untouched.
