@@ -83,3 +83,11 @@ decided here.
   is checked is unchanged.
 - Every line has a diary twin, and the leak test (`sprecorder-mac-0018`) searches it like
   any other artifact.
+
+---
+
+## Amendment — 2026-09-10
+
+The refused-permission example above loses its *"Already switched on? [Reset permission]"*
+row: that button is not built for now (`sprecorder-mac-0041`). The rest of the example and
+every wording rule here stand.

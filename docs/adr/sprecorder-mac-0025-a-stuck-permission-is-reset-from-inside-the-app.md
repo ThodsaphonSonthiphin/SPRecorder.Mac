@@ -131,3 +131,12 @@ permission*.
   `CGPreflightScreenCaptureAccess`, `AVCaptureDevice.authorizationStatus`, `IOHIDCheckAccess` all
   kept an old answer after a reset. "The check never trusts the cached permission hint", in the
   consequences below, now applies to all three.
+
+---
+
+## Superseded in part — 2026-09-10
+
+**The Reset permission button is not built for now** (`sprecorder-mac-0041`): the stuck state
+did not reproduce on macOS 26.6.2 for an app that asks for its own permissions, and a failed
+result's *Send a problem report* button covers it if it ever does. The measurements above stand
+as the record of what an in-app reset does, should the button be built later.
