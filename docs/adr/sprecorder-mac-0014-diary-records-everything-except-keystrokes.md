@@ -94,7 +94,7 @@ only greppable — she may well be the one reading it first.
 
 ## Amendment — 2026-09-10. Retention now governs the diary only.
 
-`sprecorder-mac-0021` keeps a sent problem report **permanently**, in a *Problem
+`sprecorder-mac-0024` keeps a sent problem report **permanently**, in a *Problem
 reports* folder inside her recordings folder — the user's choice (*"don't clean data,
 leave it"*), made knowing this ADR rejected keep-forever. The 7-day deletion above is
 unchanged for the diary itself. What changes is the sentence *"retention is the privacy
