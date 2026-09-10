@@ -65,3 +65,27 @@ where the ~536 surviving lines from the Windows app land, which is what
 `pure-logic-reuse` decides next. Whether the Core ships as its own Swift Package
 with its own test target is now the concrete form of a fog line, and
 `test-strategy` is unblocked by this decision.
+
+---
+
+## Correction — 2026-09-10, measured
+
+**The claim above that "the compiler is the enforcement" is wrong.** It was
+asserted, not tested. Measured on macOS 26.6.2 with Swift 6.3.3: a library target
+containing `import ScreenCaptureKit` and `import AppKit` compiled cleanly in 4.5
+seconds, with no error and no warning.
+
+A Swift module boundary prevents the Core from using the App target's **own**
+types. It does nothing about **system frameworks**, which are importable from any
+macOS target. There is no native Swift mechanism to forbid an import.
+
+The decision to have two modules stands — it was right for the reasons given, and
+`RecordingSession` still becomes testable against fakes, which was the point. Only
+the enforcement mechanism changes: a Run Script build phase on the Core target
+fails the build when a forbidden import appears. See `sprecorder-mac-0007` for the
+script and for why a Linux compilation, which *would* enforce it at the compiler
+level, was not adopted.
+
+The sentence "A module boundary makes `import ScreenCaptureKit` inside the Core a
+build error" should be read as describing the **intended outcome**, now delivered
+by the build script rather than by the language.
