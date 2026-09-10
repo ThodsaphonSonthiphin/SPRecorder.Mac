@@ -137,3 +137,39 @@ Two things this deliberately does not settle: whether a Named session becomes
 the primary way a Recording Session is identified (still fog on the map — this
 decision keeps the timestamp primary and the name secondary), and how existing
 Windows recordings would be carried across, which remains unspecified.
+
+---
+
+## Correction — 2026-09-10, measured against the Windows source
+
+Two references above are wrong. The decision is unaffected; only where it lands is.
+
+**1. There is no "Files tab."** `sprecorder-mac-0011` keeps the Windows six:
+**General, Audio, Mixed file, Splitting, Screen, Markers** — confirmed at
+`SettingsForm.cs:89-94`. `FileNamePattern` is built at `SettingsForm.cs:140`,
+inside `BuildGeneralTab()`. So the sentence *"the Files tab described in
+`sprecorder-mac-0011` keeps its one text field"* should read **the General tab**,
+and it is the General tab's hint text that changes.
+
+**2. Dropping `{track}` breaks the validator, which this ADR does not mention.**
+`SettingsForm.cs:814` refuses to save unless the pattern **contains `{track}`**:
+
+```csharp
+if (string.IsNullOrWhiteSpace(_fileNamePattern.Text) || !_fileNamePattern.Text.Contains("{track}"))
+```
+
+This ADR removes `{track}` as a token. Ported unchanged, that rule rejects
+**every** valid new pattern, including this ADR's own default
+`{timestamp:yyyy-MM-dd EEE HH.mm}` — and it fails at Save, where it reads as the
+settings window being broken. The replacement rule is that the pattern must be
+non-empty and must contain `{timestamp:...}`, since the folder name is now the
+only thing carrying the time.
+
+**Not a defect, but worth naming:** `audio-encoding-format` resolved with
+*"Mp3FrameSplitter and Mp3Mixer get rewritten for container-based splitting"*,
+while `sprecorder-mac-0003` and `sprecorder-mac-0015` both record
+`Mp3FrameSplitter` as **drop**. Both are true — the MP3 frame-header class is
+dropped, the splitting capability is rewritten — but no ADR yet specifies how an
+`.m4a` is split, and this ADR's `Computer audio 001.m4a` naming assumes it exists.
+The Splitting tab and its `SplitMode` / `SplitTimeMinutes` / `SplitSizeMb`
+settings (`sprecorder-mac-0004`) assume it too.
