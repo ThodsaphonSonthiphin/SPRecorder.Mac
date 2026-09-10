@@ -79,3 +79,16 @@ Recorded now so the later ticket starts from facts rather than research:
 
 `install-and-update-channel` becomes a `public-release` concern rather than a
 blocker on shipping to two Macs.
+
+---
+
+## Amendment — 2026-09-10: ad-hoc signing is superseded
+
+`sprecorder-mac-0040` replaces the **ad-hoc** choice above with **one free self-signed
+code-signing certificate**, an option this ADR did not consider. An ad-hoc requirement is a
+build's cdhash, so every version lost every permission; a certificate's requirement names who
+made it, so permissions should carry over. That is proven on the Mac holding the certificate
+and must be probed on the second Mac at the first update.
+
+What stands unchanged: no hardened runtime, no entitlements file, Developer ID and
+notarization deferred with `public-release`, and the Homebrew finding.
