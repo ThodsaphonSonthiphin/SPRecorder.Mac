@@ -71,3 +71,26 @@ version of a check the script already performs.
 
 Unblocks `signing-and-notarization`, which needs to know where the entitlements
 file lives.
+
+---
+
+## Amendment — 2026-09-10, measured. The test command works.
+
+`xcodebuild test -scheme SPRecorderCore -destination 'platform=macOS'` runs the
+`SPRecorderCoreTests` suite, which is Swift Testing (`sprecorder-mac-0015`). Verified on
+macOS 26.6.2 with Xcode 26.6, first in a throwaway copy while Plan 1 was written and again
+when the project was created. `-only-testing:SPRecorderCoreTests/<SuiteName>` selects one suite.
+
+How the project is built, so it is not rediscovered:
+
+- The project file is hand-written, `objectVersion = 77`, with **folder-synchronized groups**:
+  every file inside `SPRecorderCore/`, `SPRecorderApp/` or `SPRecorderCoreTests/` belongs to
+  that target with no project-file edit. The `.xcodeproj` diff problem recorded above is
+  therefore mostly confined to build settings.
+- Both schemes are shared (`xcshareddata/xcschemes`), because `xcodebuild` on a fresh clone
+  sees no schemes otherwise.
+- The forbidden-import `grep` above lives in `scripts/forbid-core-platform-imports.sh` and runs
+  as the Core target's first build phase. A planted `import AppKit` failed the build with the
+  message above; removing it passed. `ENABLE_USER_SCRIPT_SANDBOXING = NO`, so the script may
+  read the whole Core folder.
+- Signing is ad-hoc (`CODE_SIGN_IDENTITY = "-"`) until `sprecorder-mac-0040`'s certificate exists.
