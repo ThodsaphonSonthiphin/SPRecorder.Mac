@@ -62,3 +62,20 @@ them.
 
 Unblocks `test-strategy`. The exact default file name format is deliberately not
 decided here — see the `default-file-name-format` ticket.
+
+---
+
+## Amendment — 2026-09-10, measured
+
+Two claims in the **Tests** section above are wrong, and are corrected in
+`sprecorder-mac-0015`:
+
+1. **"The Windows suite has 17 xUnit files."** It has **15**, holding **90** tests
+   in 1,337 lines. The figure came from the ticket, not from a count.
+2. **`HotkeyStatus`, `HotkeyValidation` and `MarkNoteInputForm` do survive.** All
+   three are pure logic this port keeps — the Inactive hotkey record rendered by
+   `sprecorder-mac-0010`, the "two hotkeys must differ" rule, and (despite its file
+   name) a monitor-picking rule that keeps the note window out of the Screen
+   recording. Read `sprecorder-mac-0015` for the per-file verdicts.
+
+The per-class verdicts for the seven pure classes are unaffected.
