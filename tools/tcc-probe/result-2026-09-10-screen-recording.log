@@ -1,0 +1,20 @@
+[2026-09-10T04:42:25Z] === PROBE START — pid 17493 ===
+[2026-09-10T04:42:25Z] STEP 1  preflight at launch = false
+[2026-09-10T04:42:25Z] STEP 2  CGRequestScreenCaptureAccess() returned false
+[2026-09-10T04:42:25Z] STEP 3  now polling. Toggle the permission ON in System Settings.
+[2026-09-10T04:42:25Z]         The question: does capture start WITHOUT quitting this app?
+[2026-09-10T04:42:25Z] attempt 1: preflight=false  SCShareableContent FAILED — Error Domain=com.apple.ScreenCaptureKit.SCStreamErrorDomain Code=-3801 "The user declined TCCs for application, window, display capture" UserInfo={NSLocalizedDescription=The user declined TCCs for application, window, display capture}
+[2026-09-10T04:42:28Z] attempt 2: preflight=false  SCShareableContent FAILED — Error Domain=com.apple.ScreenCaptureKit.SCStreamErrorDomain Code=-3801 "The user declined TCCs for application, window, display capture" UserInfo={NSLocalizedDescription=The user declined TCCs for application, window, display capture}
+[2026-09-10T04:42:31Z] attempt 3: preflight=false  SCShareableContent FAILED — Error Domain=com.apple.ScreenCaptureKit.SCStreamErrorDomain Code=-3801 "The user declined TCCs for application, window, display capture" UserInfo={NSLocalizedDescription=The user declined TCCs for application, window, display capture}
+[2026-09-10T04:42:34Z] attempt 4: preflight=false  SCShareableContent FAILED — Error Domain=com.apple.ScreenCaptureKit.SCStreamErrorDomain Code=-3801 "The user declined TCCs for application, window, display capture" UserInfo={NSLocalizedDescription=The user declined TCCs for application, window, display capture}
+[2026-09-10T04:42:37Z] attempt 5: preflight=false  SCShareableContent OK — 1 display(s)
+[2026-09-10T04:42:37Z] VERDICT: CAPTURE WORKS IN THE SAME PROCESS — NO RELAUNCH REQUIRED
+[2026-09-10T04:42:37Z] === PROBE END ===
+[2026-09-10T04:42:39Z] === PROBE START — pid 17531 ===
+[2026-09-10T04:42:39Z] STEP 1  preflight at launch = true
+[2026-09-10T04:42:39Z] STEP 2  CGRequestScreenCaptureAccess() returned true
+[2026-09-10T04:42:39Z] STEP 3  now polling. Toggle the permission ON in System Settings.
+[2026-09-10T04:42:39Z]         The question: does capture start WITHOUT quitting this app?
+[2026-09-10T04:42:39Z] attempt 1: preflight=true  SCShareableContent OK — 1 display(s)
+[2026-09-10T04:42:39Z] VERDICT: CAPTURE WORKS IN THE SAME PROCESS — NO RELAUNCH REQUIRED
+[2026-09-10T04:42:39Z] === PROBE END ===

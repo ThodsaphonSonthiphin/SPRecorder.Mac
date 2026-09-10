@@ -86,3 +86,38 @@ opens the matching System Settings pane.
 Unblocks `signing-and-notarization` and contributes to `install-and-update-channel`.
 `menu-bar-app-shape` inherits a requirement: the icon must support a badge overlay
 and the menu must be able to name missing grants.
+
+---
+
+## Amendment — 2026-09-10, measured
+
+The restart risk recorded above was **verified and discharged** by
+`verify-screen-recording-restart`, on macOS 26.6.2 / arm64:
+
+**No relaunch is required.** A process running since before the grant existed began
+capturing 12 seconds after the operator toggled the permission on, with no restart.
+The lazy prompting decision stands unchanged, and the mitigation suggested above —
+preflighting at arm-time to keep a restart out of a live meeting — is no longer
+needed for that reason (it may still be worth doing to keep the dialog out of the
+meeting, which is a separate argument).
+
+Two behaviours were found that this ADR must now carry:
+
+**1. `CGPreflightScreenCaptureAccess()` can return `false` while capture succeeds.**
+It is cached per process and was observed reporting "not allowed" in the same log
+line as a successful `SCShareableContent` call. **Never gate a Recording Session on
+preflight alone.** Use it as a cheap hint for the menu-bar badge; treat attempting
+the capability and reading the error as authoritative. A gate built on preflight
+would refuse to record when recording would have worked.
+
+**2. A `Deny` click can override the System Settings switch.** After the operator
+clicked Deny and then enabled the switch, both the running process and a freshly
+launched one still read `false`; only `tccutil reset ScreenCapture <bundle-id>`
+cleared it. The app must detect "Settings shows granted, capture still fails" and
+tell the user how to recover — otherwise the UI convinces them the app is broken.
+This is a new requirement on the missing-grant UI described above.
+
+**3. macOS 26 has two separate permission lists**, not one grant with a sub-toggle:
+*Screen & System Audio Recording* and *System Audio Recording Only*. The System
+track may therefore be able to ride the narrower second grant, which never mentions
+the screen. Which API lands an app in which list is not yet established.
