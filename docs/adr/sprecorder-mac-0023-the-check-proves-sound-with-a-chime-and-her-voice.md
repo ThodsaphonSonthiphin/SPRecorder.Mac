@@ -56,9 +56,10 @@ record*, and the fix differs — one is a permission, the other is a device or a
 
 - **SPRecorder must be able to record its own chime.** A real Recording Session never
   needs to hear SPRecorder, and the computer-audio capture may be set to leave the app's
-  own sound out. The check needs that sound included. `sprecorder-mac-0021` moves
-  computer audio to its own capture path, independent of the screen, so this is a
-  property of that path — measure it there.
+  own sound out. The check needs that sound included. Whether computer audio rides the
+  screen's capture stream or a path of its own is not settled — `sprecorder-mac-0021`
+  makes a separate audio path a precondition for external monitors, which it defers —
+  so measure this on whichever path is actually built.
 - **Whether the chime is still caught with the output muted, or with headphones in.** If
   a muted Mac hides the chime from capture, the line must say *turn the volume up and
   check again*, not blame a permission.

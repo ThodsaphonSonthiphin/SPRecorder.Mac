@@ -64,3 +64,19 @@ own design. It is the natural home for the recovery path
 `sprecorder-mac-0006` demands — *"Settings shows granted, capture still fails"* —
 because it is the only place that can detect that state and explain
 `tccutil reset ScreenCapture <bundle-id>` to a person who is not a developer.
+
+---
+
+## Amendment — 2026-09-10. Designed under `setup-self-check`.
+
+The decision above stands. Its details were settled by six ADRs, which win where they
+differ from the text above:
+
+| what | where | changes here |
+|---|---|---|
+| where the button lives | `sprecorder-mac-0022` | a seventh Settings tab, **Permissions** |
+| how sound is proven | `sprecorder-mac-0023` | a chime and her voice — *"recorded 2 seconds, N kB"* no longer passes a line |
+| a grant macOS will not honour | `sprecorder-mac-0025` | **Reset permission** runs inside the app; no one is asked to explain `tccutil` |
+| surviving its own failures | `sprecorder-mac-0028` | the real recording first, each part alone only when it fails |
+| the words she reads | `sprecorder-mac-0031` | names, not numbers; the Key caster line cannot claim *"the overlay drew"* |
+| never a Recording Session | `sprecorder-mac-0032` | six rules, including a time limit on every part |
