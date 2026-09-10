@@ -105,7 +105,7 @@ chosen so a silently-failed capability would be **noticed without already being
 suspected**; hidden behind an auto-hiding menu bar, it can only be found by someone
 already looking.
 
-This is recorded as a measured finding, not resolved here. Two things are now true at
+This is recorded as a measured finding, not resolved here. **Resolved by `sprecorder-mac-0020`**: only five of 21 messages can fire mid-meeting, the badges are met outside meetings and stay on the icon, and a failure or a Marker reaches her through the non-activating panel instead. Two things are now true at
 once — notifications cannot be trusted for critical news, and the status icon cannot
 be seen when it matters most — and reconciling them is a decision of its own.
 
