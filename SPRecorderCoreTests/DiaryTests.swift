@@ -98,4 +98,28 @@ struct DiaryFileTests {
         #expect(text.hasPrefix("earlier line\n"))
         #expect(text.hasSuffix("[notice] App: after relaunch\n"))
     }
+
+    @Test func failuresToWriteTheDiaryAreReportedOnce() throws {
+        let dir = try makeTemporaryDirectory()
+        let blockedPath = dir.appendingPathComponent("Logs", isDirectory: true)
+        // Create a file at the path where the directory should be created
+        FileManager.default.createFile(atPath: blockedPath.path, contents: nil)
+
+        let recorder = FailureRecorder()
+        let when = TestTime.date(2026, 9, 10, 9, 0)
+        let file = DiaryFile(directory: blockedPath, timeZone: TestTime.bangkok, now: when, onFailure: recorder.record)
+
+        // Write two entries on the same day
+        file.write(DiaryEntry(date: when, level: .notice, category: .app, message: "first"))
+        file.write(DiaryEntry(date: when, level: .notice, category: .app, message: "second"))
+
+        let messages = recorder.messages
+        // Expect exactly one "create folder" error and one "open file" error
+        let createErrors = messages.filter { $0.hasPrefix("Could not create the Diary folder") }
+        let openErrors = messages.filter { $0.hasPrefix("Could not open the Diary file") }
+
+        #expect(createErrors.count == 1)
+        #expect(openErrors.count == 1)
+        #expect(messages.count == 2)
+    }
 }

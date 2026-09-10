@@ -27,6 +27,17 @@ enum TestTime {
     }
 }
 
+/// Keeps a lock-protected list of failure messages from a DiaryFile, so a test can assert
+/// that specific failures are reported.
+final class FailureRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var _messages: [String] = []
+
+    var messages: [String] { lock.withLock { _messages } }
+
+    func record(_ message: String) { lock.withLock { _messages.append(message) } }
+}
+
 /// A fresh, empty folder under the system temporary directory.
 func makeTemporaryDirectory() throws -> URL {
     let url = FileManager.default.temporaryDirectory
