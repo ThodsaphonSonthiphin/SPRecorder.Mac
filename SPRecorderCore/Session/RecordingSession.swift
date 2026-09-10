@@ -29,6 +29,7 @@ public final class RecordingSession {
     private let home: URL
     private let now: () -> Date
     private let timeZone: TimeZone
+    private var pendingInterruption: CaptureError?
 
     public init(settings: @escaping () -> AppSettings, capture: any AudioCapturing, diary: Diary, home: URL,
                 now: @escaping () -> Date = { Date() }, timeZone: TimeZone = .current) {
@@ -72,6 +73,7 @@ public final class RecordingSession {
         }
 
         do {
+            pendingInterruption = nil
             try await capture.start(systemTrack: TrackFile.systemTrack.url(in: folder),
                                     micTrack: TrackFile.micTrack.url(in: folder),
                                     onInterrupted: { [weak self] reason in
@@ -79,6 +81,7 @@ public final class RecordingSession {
                                     })
         } catch {
             let reason = CaptureError(error)
+            pendingInterruption = nil
             diary.error(.recordingSession, "Recording Session could not start (\(folder.lastPathComponent)): \(reason.plainWords)")
             removeIfEmpty(folder)
             state = .idle
@@ -88,6 +91,10 @@ public final class RecordingSession {
 
         diary.notice(.recordingSession, "Recording Session started: \(folder.path)")
         state = .recording(folder: folder, startedAt: startedAt)
+        if let reason = pendingInterruption {
+            pendingInterruption = nil
+            await captureInterrupted(reason)
+        }
     }
 
     public func stop() async {
@@ -105,10 +112,16 @@ public final class RecordingSession {
     }
 
     private func captureInterrupted(_ reason: CaptureError) async {
-        guard case let .recording(folder, _) = state else { return }
-        diary.error(.recordingSession, "Capture stopped by itself during the Recording Session (\(folder.lastPathComponent)): \(reason.plainWords)")
-        onFailure?("Recording stopped by itself. \(reason.plainWords)")
-        await stop()
+        switch state {
+        case .starting:
+            pendingInterruption = reason  // handled as soon as `start()` finishes starting
+        case let .recording(folder, _):
+            diary.error(.recordingSession, "Capture stopped by itself during the Recording Session (\(folder.lastPathComponent)): \(reason.plainWords)")
+            onFailure?("Recording stopped by itself. \(reason.plainWords)")
+            await stop()
+        case .stopping, .idle:
+            diary.warning(.recordingSession, "Capture reported a problem after the Recording Session ended: \(reason.plainWords)")
+        }
     }
 
     private func removeIfEmpty(_ folder: URL) {

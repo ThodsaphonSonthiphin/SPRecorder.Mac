@@ -164,4 +164,40 @@ struct RecordingSessionTests {
         let folder = recordings.appendingPathComponent("2026-09-10 Thu 14.30", isDirectory: true)
         #expect(seen == [.starting, .recording(folder: folder, startedAt: clock), .stopping, .idle])
     }
+
+    @Test func captureThatStopsWhileStartingEndsTheSessionOnceItHasStarted() async {
+        capture.holdStart = true
+        var failures: [String] = []
+        let session = makeSession { clock }
+        session.onFailure = { failures.append($0) }
+        let starting = Task { await session.start() }
+        for _ in 0..<50 where !capture.isHoldingStart { await Task.yield() }
+
+        capture.interrupt(.failed("The Mic track could not be set up for writing."))
+        for _ in 0..<50 { await Task.yield() }
+        #expect(session.state == .starting)
+
+        capture.releaseStart()
+        await starting.value
+        for _ in 0..<50 where session.state != .idle { await Task.yield() }
+
+        #expect(session.state == .idle)
+        #expect(capture.stopCalls == 1)
+        #expect(sink.lines(.error) == ["Capture stopped by itself during the Recording Session (2026-09-10 Thu 14.30): The Mic track could not be set up for writing."])
+        #expect(failures == ["Recording stopped by itself. The Mic track could not be set up for writing."])
+    }
+
+    @Test func aProblemReportedAfterTheSessionEndedIsOnlyNoted() async {
+        let session = makeSession { clock }
+        await session.start()
+        await session.stop()
+
+        capture.interrupt(.failed("late"))
+        for _ in 0..<50 where sink.lines(.warning).isEmpty { await Task.yield() }
+
+        #expect(session.state == .idle)
+        #expect(capture.stopCalls == 1)
+        #expect(sink.lines(.warning) == ["Capture reported a problem after the Recording Session ended: late"])
+        #expect(sink.lines(.error).isEmpty)
+    }
 }

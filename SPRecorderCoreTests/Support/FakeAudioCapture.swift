@@ -18,13 +18,13 @@ final class FakeAudioCapture: AudioCapturing {
 
     func start(systemTrack: URL, micTrack: URL, onInterrupted: @escaping @Sendable (CaptureError) -> Void) async throws {
         startCalls.append((systemTrack, micTrack))
+        self.onInterrupted = onInterrupted
         if holdStart {
             await withCheckedContinuation { heldStart = $0 }
         }
         if let startError { throw startError }
         FileManager.default.createFile(atPath: systemTrack.path, contents: Data("system".utf8))
         FileManager.default.createFile(atPath: micTrack.path, contents: Data("mic".utf8))
-        self.onInterrupted = onInterrupted
     }
 
     func stop() async throws {
