@@ -1,4 +1,4 @@
-// aac-splitting probe (sprecorder-mac-0022): measure, on this Mac, how an AAC .m4a
+// aac-splitting probe (sprecorder-mac-0026): measure, on this Mac, how an AAC .m4a
 // behaves when cut into parts, and what survives if the app dies mid-write.
 //
 // Build:  swiftc -Onone -swift-version 5 probe.swift -o probe
@@ -6,7 +6,7 @@
 //         ./probe <workdir> extra            fragmented source, one-hour speed, size estimate-verify
 //         ./probe <workdir> crash <0|1>      child used by the crash test: write 30 s, then SIGKILL
 //
-// Results as of 2026-09-10 on macOS 26.6.2 arm64 are recorded in sprecorder-mac-0022.
+// Results as of 2026-09-10 on macOS 26.6.2 arm64 are recorded in sprecorder-mac-0026.
 import Foundation
 import AVFoundation
 import CoreMedia

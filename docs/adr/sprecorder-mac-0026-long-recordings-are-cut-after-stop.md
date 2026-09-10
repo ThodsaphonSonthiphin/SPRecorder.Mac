@@ -10,6 +10,8 @@ flowchart TD
     S{"How is a size limit met<br/>when AAC bitrate varies?"} -->|chosen| F["Estimate the range from the file's<br/>own bytes per second, export,<br/>measure the part, shrink and redo<br/>it if over"]
     S -->|rejected| G["fileLengthLimit on the export<br/>refused for passthrough audio:<br/>-11838, underlying -16976"]
     S -->|rejected| I["Count packet bytes while copying<br/>overshot by 3.3% - the file's<br/>index grows with every packet"]
+    X{"Cutting fails partway<br/>through a file?"} -->|chosen| J["Delete the parts written so far,<br/>keep the uncut file, say so in words"]
+    X -->|rejected| K["Leave the parts written so far<br/>Windows today - a half set reads<br/>as a meeting that ended early"]
 ```
 
 The Splitting tab survives (`sprecorder-mac-0011`), so do `SplitMode`,
@@ -94,9 +96,15 @@ audio file. It stays, as `sprecorder-mac-0011` promised, and so does the
 - **Order on disk.** A file that fits in one part is not touched (Windows parity).
   Otherwise every part is written first and the original goes last. If any part
   fails, the parts already written are deleted and the original is kept — Windows
-  leaves partial chunks behind; here the folder never holds half a set. The
-  failure is reported in words (`sprecorder-mac-0020`). Whether any original is
-  **kept whole** alongside its parts is the Marker question, decided separately.
+  leaves partial chunks behind; here the folder never holds half a set, which is
+  easy to upload by mistake. The user chose this on 2026-09-10: *"Clean up"*. The
+  failure is reported in words (`sprecorder-mac-0020`). One original is **kept
+  whole** alongside its parts: Both voices, when the session has Markers
+  (`sprecorder-mac-0027`).
+- **Parts line up in time mode only.** Time mode cuts all three files on the same
+  boundaries, so `Computer audio 004.m4a` and `My microphone 004.m4a` cover the
+  same minutes. Size mode cuts each file on its own, because their bitrates
+  differ — as on Windows.
 - **Not measured: NotebookLM.** AVFoundation honours the skip-the-lead-in
   instruction. A player that ignores it would replay at most 33 ms at a join,
   harmless for transcription. Whether NotebookLM ingests a cut part was not
