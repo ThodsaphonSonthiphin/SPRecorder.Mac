@@ -87,3 +87,47 @@ Anything else takes the fallback.
   finding 1). A line is judged by attempting the capture and reading the result.
 - The reset is logged in the diary (`sprecorder-mac-0013`) by service name, so a later
   support conversation can see it happened.
+
+---
+
+## Amendment — 2026-09-10, measured. The reset works; the stuck state did not appear.
+
+Measured by `check-my-setup-probe` (#33) on macOS 26.6.2 / arm64 with an ad-hoc signed
+`LSUIElement` probe (`tools/setup-check-probe/`, full log in `result-2026-09-10.log`). The
+independent channel was tccd's unified log; every measurement is on the ticket.
+
+**The reset from inside the app works, for all three permissions.** The app ran
+`/usr/bin/tccutil reset <service> <its own bundle id>` as a child process — no admin password,
+no terminal — seven times. tccd logged `TCCAccessResetInternal` → a `Delete` for that one entry
+→ `REPLY`, every time. Across the session tccd published 27 permission events, **all for the
+probe's own identifier**.
+
+**Against the pass condition fixed above, per permission:**
+
+| permission | macOS asks again | grant works without a relaunch | verdict |
+|---|---|---|---|
+| Screen & System Audio | yes — but tccd logs `does not allow prompting; returning denied`: a notification pointing at System Settings, **never an Allow button**, raised by the next capture attempt | yes | **PASS**, with the wording corrected below |
+| Microphone | yes — **only when the app tries to record** (`coreaudiod` asks tccd); `requestAccess` answers from a stale per-process cache and shows nothing | yes, *Allow* in the prompt | **PASS** |
+| Input Monitoring | **no, not from the running app** — its requests are answered from the stale cache, the event tap check is `preflight=yes`, and the reset **removes the app from the Input Monitoring list**; only a relaunched process could ask again and restore the row | yes, once the row exists and the switch is on | **FAIL → the fallback applies to this line** |
+
+**So, as this ADR decided in advance:** on a refused **Input Monitoring** line the second button
+is **Send a problem report**, not *Reset permission*. Screen and Microphone keep *Reset
+permission*.
+
+**Corrections to the text above:**
+- *"macOS asks again and she can click Allow"* is true of **Microphone only**. For Screen & System
+  Audio the grant is always the System Settings switch, so *Reset permission* must be followed
+  by *Open System Settings*. For Microphone the reset must be followed by an **actual recording
+  attempt**, not a permission request, or nothing appears.
+- **The trap this ADR exists for did not reproduce.** A *Deny* followed by the switch turned on
+  was enough to grant, in the same process, for Screen, Microphone and Input Monitoring. #24's
+  override was not seen on this build. Whether the button is still worth building is charted as
+  its own question on the decision map.
+
+**Two hazards the words must cover, both measured:**
+- Turning on any of the three switches raises a box offering to **reopen the app**; an attentive
+  operator pressed it 6 times in 8. A check that is running when that happens is quit.
+- In a running process the permission-reading calls are **stale hints** —
+  `CGPreflightScreenCaptureAccess`, `AVCaptureDevice.authorizationStatus`, `IOHIDCheckAccess` all
+  kept an old answer after a reset. "The check never trusts the cached permission hint", in the
+  consequences below, now applies to all three.

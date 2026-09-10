@@ -1,0 +1,113 @@
+[2026-09-10T08:07:55Z] === PROBE START - pid 38369 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:07:55Z] snapshot at launch: screenPreflight=false micStatus=notDetermined inputHID=unknown listenPreflight=false
+--- relaunch 08:12:33
+[2026-09-10T08:12:33Z] === PROBE START - pid 39889 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:12:33Z] snapshot at launch: screenPreflight=false micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:14:31Z] ASK ScreenCapture - before: screenPreflight=false micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:14:31Z] ASK ScreenCapture - CGRequestScreenCaptureAccess() returned false
+[2026-09-10T08:14:56Z] ASK ScreenCapture - before: screenPreflight=false micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:14:56Z] ASK ScreenCapture - CGRequestScreenCaptureAccess() returned false
+[2026-09-10T08:15:00Z] ASK ScreenCapture - before: screenPreflight=false micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:15:00Z] ASK ScreenCapture - CGRequestScreenCaptureAccess() returned false
+[2026-09-10T08:16:26Z] === PROBE START - pid 40925 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:16:26Z] snapshot at launch: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:16:38Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:16:38Z] TEST ScreenCapture PASS - SCShareableContent OK, 1 display(s)
+[2026-09-10T08:16:53Z] RESET ScreenCapture - before: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:16:53Z] RESET ScreenCapture exit=0 stdout=Successfully reset ScreenCapture approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:16:53Z] RESET ScreenCapture - after: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:17:12Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:17:12Z] TEST ScreenCapture FAIL - The user declined TCCs for application, window, display capture
+[2026-09-10T08:17:27Z] === PROBE START - pid 41033 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:17:27Z] snapshot at launch: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:19:22Z] RESET ScreenCapture - before: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:19:22Z] RESET ScreenCapture exit=0 stdout=Successfully reset ScreenCapture approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:19:22Z] RESET ScreenCapture - after: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:19:32Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:19:32Z] TEST ScreenCapture FAIL - The user declined TCCs for application, window, display capture
+[2026-09-10T08:19:53Z] === PROBE START - pid 41307 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:19:53Z] snapshot at launch: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:19:59Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:19:59Z] TEST ScreenCapture PASS - SCShareableContent OK, 1 display(s)
+[2026-09-10T08:22:20Z] RESET ScreenCapture - before: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:22:21Z] RESET ScreenCapture exit=0 stdout=Successfully reset ScreenCapture approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:22:21Z] RESET ScreenCapture - after: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:22:26Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:22:26Z] TEST ScreenCapture FAIL - The user declined TCCs for application, window, display capture
+[2026-09-10T08:22:49Z] === PROBE START - pid 41551 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:22:49Z] snapshot at launch: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:23:06Z] RESET ScreenCapture - before: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:23:06Z] RESET ScreenCapture exit=0 stdout=Successfully reset ScreenCapture approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:23:06Z] RESET ScreenCapture - after: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:23:18Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:23:18Z] TEST ScreenCapture FAIL - The user declined TCCs for application, window, display capture
+[2026-09-10T08:23:36Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:23:36Z] TEST ScreenCapture PASS - SCShareableContent OK, 1 display(s)
+[2026-09-10T08:25:21Z] RESET ScreenCapture - before: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:25:21Z] RESET ScreenCapture exit=0 stdout=Successfully reset ScreenCapture approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:25:21Z] RESET ScreenCapture - after: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:25:26Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:25:26Z] TEST ScreenCapture FAIL - The user declined TCCs for application, window, display capture
+[2026-09-10T08:25:58Z] TEST ScreenCapture - snapshot: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:25:58Z] TEST ScreenCapture PASS - SCShareableContent OK, 1 display(s)
+[2026-09-10T08:27:48Z] ASK Microphone - before: screenPreflight=true micStatus=notDetermined inputHID=unknown listenPreflight=false
+[2026-09-10T08:27:54Z] ASK Microphone - requestAccess completion granted=false
+[2026-09-10T08:28:01Z] TEST Microphone - snapshot: screenPreflight=true micStatus=denied inputHID=unknown listenPreflight=false
+[2026-09-10T08:28:03Z] TEST Microphone FAIL - frames=66150 peak=-999.0 dBFS (all-zero samples = no access)
+[2026-09-10T08:29:27Z] === PROBE START - pid 42015 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:29:27Z] snapshot at launch: screenPreflight=true micStatus=denied inputHID=unknown listenPreflight=false
+[2026-09-10T08:29:38Z] TEST Microphone - snapshot: screenPreflight=true micStatus=denied inputHID=unknown listenPreflight=false
+[2026-09-10T08:29:41Z] TEST Microphone FAIL - frames=66150 peak=-999.0 dBFS (all-zero samples = no access)
+[2026-09-10T08:37:11Z] === PROBE START - pid 42833 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T08:37:11Z] snapshot at launch: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:37:18Z] TEST Microphone - snapshot: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:37:20Z] TEST Microphone PASS - frames=66150 peak=-25.3 dBFS (all-zero samples = no access)
+[2026-09-10T08:39:59Z] RESET Microphone - before: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:39:59Z] RESET Microphone exit=0 stdout=Successfully reset Microphone approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:39:59Z] RESET Microphone - after: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:40:10Z] ASK Microphone - before: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:40:10Z] ASK Microphone - requestAccess completion granted=true
+[2026-09-10T08:45:58Z] TEST Microphone - snapshot: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:46:04Z] TEST Microphone PASS - frames=66150 peak=-23.0 dBFS (all-zero samples = no access)
+[2026-09-10T08:48:20Z] ASK ListenEvent - before: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T08:48:20Z] ASK ListenEvent - CGRequestListenEventAccess() returned false
+[2026-09-10T08:48:20Z] ASK ListenEvent - IOHIDRequestAccess() returned false
+[2026-09-10T08:48:41Z] TEST ListenEvent - snapshot: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:48:41Z] TEST ListenEvent FAIL - tapCreate returned nil
+[2026-09-10T08:51:10Z] TEST ListenEvent - snapshot: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:51:10Z] TEST ListenEvent PASS - listen-only tap created (and destroyed at once)
+[2026-09-10T08:52:09Z] RESET ListenEvent - before: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:52:09Z] RESET ListenEvent exit=0 stdout=Successfully reset ListenEvent approval status for com.sprecorder.setupcheckprobe stderr=
+[2026-09-10T08:52:09Z] RESET ListenEvent - after: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:52:21Z] TEST ListenEvent - snapshot: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:52:21Z] TEST ListenEvent FAIL - tapCreate returned nil
+[2026-09-10T08:54:10Z] ASK ListenEvent - before: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:54:10Z] ASK ListenEvent - CGRequestListenEventAccess() returned false
+[2026-09-10T08:54:10Z] ASK ListenEvent - IOHIDRequestAccess() returned false
+[2026-09-10T08:54:32Z] ASK ListenEvent - before: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T08:54:32Z] ASK ListenEvent - CGRequestListenEventAccess() returned false
+[2026-09-10T08:54:32Z] ASK ListenEvent - IOHIDRequestAccess() returned false
+--- agent relaunch 09:06:35
+[2026-09-10T09:06:35Z] === PROBE START - pid 44707 bundle com.sprecorder.setupcheckprobe ===
+[2026-09-10T09:06:35Z] snapshot at launch: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T09:07:04Z] ASK ListenEvent - before: screenPreflight=true micStatus=authorized inputHID=unknown listenPreflight=false
+[2026-09-10T09:07:04Z] ASK ListenEvent - CGRequestListenEventAccess() returned false
+[2026-09-10T09:07:04Z] ASK ListenEvent - IOHIDRequestAccess() returned false
+[2026-09-10T09:07:33Z] TEST ListenEvent - snapshot: screenPreflight=true micStatus=authorized inputHID=denied listenPreflight=false
+[2026-09-10T09:07:33Z] TEST ListenEvent PASS - listen-only tap created (and destroyed at once)
+[2026-09-10T09:09:44Z] CHIME start - output device="WF-1000XM5" | output volume:38, input volume:50, alert volume:100, output muted:false
+[2026-09-10T09:09:44Z] CHIME capture started (ScreenCaptureKit, capturesAudio, excludesCurrentProcessAudio=false)
+[2026-09-10T09:09:44Z] CHIME audio format - buffers=2 channelsInFirst=1 sampleRate=48000.0
+[2026-09-10T09:09:45Z] CHIME played 880 Hz + 1320 Hz, 0.7 s, amplitude 0.3 (sample index 68160)
+[2026-09-10T09:09:47Z] CHIME numbers - samples=167040 sr=48000 | baseline rms -999.0 dBFS, 880=0.00000 1320=0.00000 | chime window rms -20.0 dBFS, 880=0.20909 1320=0.16996
+[2026-09-10T09:09:48Z] CHIME FOUND - output device="WF-1000XM5" | output volume:38, input volume:50, alert volume:100, output muted:false
+[2026-09-10T09:10:04Z] CHIME start - output device="WF-1000XM5" | output volume:38, input volume:50, alert volume:100, output muted:false
+[2026-09-10T09:10:04Z] CHIME capture started (ScreenCaptureKit, capturesAudio, excludesCurrentProcessAudio=false)
+[2026-09-10T09:10:05Z] CHIME played 880 Hz + 1320 Hz, 0.7 s, amplitude 0.3 (sample index 62400)
+[2026-09-10T09:10:07Z] CHIME numbers - samples=162240 sr=48000 | baseline rms -999.0 dBFS, 880=0.00000 1320=0.00000 | chime window rms -20.0 dBFS, 880=0.20923 1320=0.16992
+[2026-09-10T09:10:08Z] CHIME FOUND - output device="WF-1000XM5" | output volume:38, input volume:50, alert volume:100, output muted:false
+[2026-09-10T09:11:44Z] CHIME start - output device="WF-1000XM5" | output volume:38, input volume:50, alert volume:100, output muted:true
+[2026-09-10T09:11:44Z] CHIME capture started (ScreenCaptureKit, capturesAudio, excludesCurrentProcessAudio=false)
+[2026-09-10T09:11:46Z] CHIME played 880 Hz + 1320 Hz, 0.7 s, amplitude 0.3 (sample index 59520)
+[2026-09-10T09:11:48Z] CHIME numbers - samples=162240 sr=48000 | baseline rms -999.0 dBFS, 880=0.00000 1320=0.00000 | chime window rms -20.0 dBFS, 880=0.20923 1320=0.16996
+[2026-09-10T09:11:48Z] CHIME FOUND - output device="WF-1000XM5" | output volume:38, input volume:50, alert volume:100, output muted:true

@@ -72,3 +72,36 @@ record*, and the fix differs — one is a permission, the other is a device or a
 - The "heard it" judgement is a level threshold on a short buffer and a match against a
   known chime — logic that belongs in the Core behind a protocol
   (`sprecorder-mac-0002`), so the fakes can feed it a voice, a chime and silence.
+
+---
+
+## Amendment — 2026-09-10, measured. The chime is heard, even muted.
+
+Measured by `check-my-setup-probe` (#33) on macOS 26.6.2 with an ad-hoc signed probe
+(`tools/setup-check-probe/`). Capture was ScreenCaptureKit with `capturesAudio = true` and
+`excludesCurrentProcessAudio = false`; the chime was 880 Hz then 1320 Hz, 0.7 s, played by the app
+itself; detection compared both tones against 1.2 s of baseline. Volume and mute were read by the
+probe at the start and end of each run.
+
+| run | output | volume / muted | baseline | chime window | verdict |
+|---|---|---|---|---|---|
+| 1 | WF-1000XM5 (Bluetooth) | 38 / false | digital silence | −20.0 dBFS, 880 Hz 0.209 | **FOUND** |
+| 2 | WF-1000XM5 | 38 / false | digital silence | −20.0 dBFS, 880 Hz 0.209 | **FOUND** |
+| 3 | WF-1000XM5 | 38 / **true** | digital silence | −20.0 dBFS, 880 Hz 0.209 | **FOUND** |
+
+**Answers to "To verify at build time":**
+- **SPRecorder can record its own chime** through ScreenCaptureKit, once `excludesCurrentProcessAudio`
+  is `false`. The captured level equals the chime's digital level after the mixer, unaffected by
+  the 38 % volume setting.
+- **Muted: still found**, at an identical level. The capture sits before the output mute, so a
+  muted Mac does not fail the computer-audio line, and the *"turn the volume up and check
+  again"* branch is not needed for it — the check passes even when she cannot hear the chime.
+- **Headphones: found.**
+- **Not measured:** built-in speakers. On a Bluetooth output the volume may be applied inside the
+  headphones, so the speaker case is not implied by these runs.
+
+**A finding for the microphone line**, from the same probe: a **refused** microphone does not
+error. `AVAudioEngine` starts and delivers full-length buffers of exact zeros. And the
+permission-reading call can be stale in a running process, so *heard only silence* cannot be
+told apart from *could not record* by reading `authorizationStatus` alone — the line has to
+judge by the capture itself.
