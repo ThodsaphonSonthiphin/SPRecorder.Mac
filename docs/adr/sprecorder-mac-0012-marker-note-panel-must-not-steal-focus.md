@@ -86,3 +86,76 @@ the Windows countdown existed to stop the window sitting on screen forever.
 
 `SPRecorder Mac design system` → **Screens / Prompts and messages**. The card marks
 the panel claim as *needs building to confirm*, matching this ADR.
+
+---
+
+## Amendment — 2026-09-10, measured. The panel claim is PROVEN.
+
+The route recorded above as **UNPROVEN** was probed and **passed**. Measured on
+macOS 26.6.2 / arm64, with an ad-hoc signed `LSUIElement` app bundle — the same
+shape the real app will have.
+
+**5 hotkey presses. The frontmost application changed on none of them.**
+
+```
+press 4: frontmost BEFORE             = Code [com.microsoft.VSCode]
+press 4: panel isKeyWindow            = true
+press 4: text field is editing        = true
+press 4: frontmost AFTER show         = Code [com.microsoft.VSCode]
+press 4: >>> TEXT ARRIVED IN THE FIELD      = true  (content: "probe", 5 chars)
+press 4: frontmost AFTER close        = Code [com.microsoft.VSCode]
+press 4: >>> FRONTMOST UNCHANGED END TO END = true
+press 4: VERDICT = PASS
+```
+
+Both halves of the pass condition declared in advance were met, and the human
+channel agreed with the machine one: the menu bar read **Code** for the whole time
+the panel was open and accepting keystrokes.
+
+**It works over a full-screen space.** Press 5 was run with the frontmost window
+full screen, and the operator confirmed by eye that the panel was drawn on top of
+it and accepted 17 typed characters. This matters because a meeting is normally
+full screen, and `panel.isVisible` alone could not have told the two apart.
+
+### The configuration that works — recorded so it is not rediscovered
+
+```swift
+NSApp.setActivationPolicy(.accessory)          // and LSUIElement in Info.plist
+
+let p = NSPanel(contentRect: …,
+                styleMask: [.nonactivatingPanel, .titled, .closable, .utilityWindow],
+                backing: .buffered, defer: false)
+p.isFloatingPanel        = true
+p.level                  = .floating
+p.hidesOnDeactivate      = false
+p.becomesKeyOnlyIfNeeded = false
+p.collectionBehavior     = [.canJoinAllSpaces, .fullScreenAuxiliary]   // the full-screen half
+
+p.makeKeyAndOrderFront(nil)      // NOT NSApp.activate(…) — that is what breaks it
+p.makeFirstResponder(field)
+```
+
+`.fullScreenAuxiliary` is load-bearing, not decoration. Without it the panel has no
+route onto a full-screen space.
+
+### A trap worth more than the result
+
+**`NSApp.isActive` becomes `true` while the app is NOT the frontmost application.**
+Observed on all 5 presses: `isActive` went `false → true` on showing the panel,
+while `NSWorkspace.frontmostApplication` never moved off `com.microsoft.VSCode`.
+
+`isActive` means *this app owns a key window*, not *this app is in front*. **Never
+gate behaviour on it.** `sprecorder-mac-0010` commits the app to never being the
+front application; a check written against `isActive` would report that commitment
+broken on every single marker note.
+
+Corroborated in passing: the Carbon hotkey registered with **no permission prompt**,
+which is what `sprecorder-mac-0006` asserts and had not measured.
+
+### What was not tested
+
+Every press was against **VS Code**, not Teams or Google Meet in a live call. The
+mechanism under test is a window-server behaviour and is app-independent, so this is
+recorded as a limit of the evidence rather than a suspected gap.
+
+The fallback recorded above is not needed, and is left in place as the contingency it was.

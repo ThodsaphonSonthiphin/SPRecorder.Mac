@@ -72,3 +72,43 @@ GDI+ drawing does not.
 `SPRecorder Mac design system` → **Components / The icon by the clock**, and
 **Components / What opens when she clicks it**. Foundations card records the
 system appearance values every screen is built from.
+
+---
+
+## Amendment — 2026-09-10, measured. The status icon is invisible in a full-screen meeting.
+
+Found while probing `marker-note-focus-probe`, and it undercuts a premise this ADR
+relies on.
+
+**Measured, macOS 26.6.2:** the menu-bar status item is present and visible in a
+normal window, and **not visible at all while the frontmost window is full screen**.
+This is ordinary macOS behaviour — the menu bar auto-hides in full screen and slides
+down only when the pointer is moved to the top edge — but the consequence for this
+app was not considered when the icon states were chosen.
+
+**Why it matters.** This ADR and `sprecorder-mac-0006` both put durable, important
+state on that icon:
+
+| state | what the icon shows | who relies on it |
+|---|---|---|
+| a Recording Session is running | solid `#e0362c` ring | this ADR |
+| a hotkey is an Inactive hotkey | amber badge | this ADR |
+| a TCC grant is missing | amber badge | `sprecorder-mac-0006` |
+
+And `sprecorder-mac-0012` states the rule that sends them there: *"notifications may
+carry helpful news but never anything the user must act on. Anything critical belongs
+on the status icon or in the menu."*
+
+**A meeting is normally full screen.** So for the entire time the app is most in use,
+every one of those signals is behind a deliberate pointer movement. The badge was
+chosen so a silently-failed capability would be **noticed without already being
+suspected**; hidden behind an auto-hiding menu bar, it can only be found by someone
+already looking.
+
+This is recorded as a measured finding, not resolved here. Two things are now true at
+once — notifications cannot be trusted for critical news, and the status icon cannot
+be seen when it matters most — and reconciling them is a decision of its own.
+
+Nothing else in this ADR changes: the icon states, the menu rows, and the
+never-frontmost commitment all stand, and the never-frontmost commitment was
+independently **proven** by the same probe (`sprecorder-mac-0012`).
