@@ -207,7 +207,7 @@ plus the Diary fragments and the Session folders give five moments:
   no video sound. With the meeting in the earbuds, the Mic track carries no second copy of the other participants — the
   speaker pickup seen in Step 9 does not happen with earbuds.
 
-### Step 17 — the ring on a dark menu bar, 09:27–09:28 (measured timeline; what the ring looked like is owed by the operator)
+### Step 17 — the ring on a dark menu bar, 09:27–09:28 (measured timeline; appearance reported by the operator)
 
 - `chronod`: `AppleInterfaceStyle` changed at 09:27:29 (Dark), 09:27:47 (nil = Light), 09:28:01 (Dark), 09:28:06 (Light).
   At 09:28:35 `defaults read -g AppleInterfaceStyle` does not exist: **the Mac is back on Light**.
@@ -215,6 +215,8 @@ plus the Diary fragments and the Session folders give five moments:
   (0:00:16; Light throughout). Both with the earbuds still the input (16000 Hz, 48 kbps), both `0 dropped`, both with the
   System track `completely silent` warning (no video playing).
 - So the red ring was on a Dark bar from 09:27:40 to 09:27:47, and the hollow ring from 09:28:03.9 to 09:28:06.
+- Reported by the operator after the final review, not independently measured: on the Dark bar the recording ring was
+  **clearly red** and the hollow ring **easy to see**. With Step 8 (red on Light), both menu-bar appearances pass.
 
 ### Blast radius, 09:15 (measured)
 

@@ -61,7 +61,6 @@ Found while building and demoing Plan 1 (`2026-09-10-plan-1-first-demo-results.m
 
 **Next hands-on session**
 - Switch the input to earbuds during a recording, and lock the screen or let the display sleep: either could end a Recording Session through `onInterrupted`. Unmeasured.
-- The ring on a dark menu bar: the timeline was measured (demo Step 17), what it looked like was not reported.
 
 **Small, any time**
 - `tests.yml`: a read-only `permissions:` block for `GITHUB_TOKEN`.
