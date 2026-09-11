@@ -13,6 +13,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var session: RecordingSession!
     private var statusItem: StatusItemController!
     private let hotkeys = CarbonHotkeyCenter()
+    /// Set when Quit arrives during a Recording Session; the app quits once the session is idle.
+    private var quitWhenIdle = false
 
     static func main() {
         let app = NSApplication.shared
@@ -47,19 +49,30 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = StatusItemController()
         statusItem.onToggle = { [weak self] in self?.toggleRecording() }
         statusItem.onOpenRecordingsFolder = { [weak self] in self?.openRecordingsFolder() }
-        session.onStateChange = { [weak self] state in self?.statusItem.show(state) }
+        session.onStateChange = { [weak self] state in
+            guard let self else { return }
+            statusItem.show(state)
+            guard quitWhenIdle else { return }
+            switch state {
+            case .recording: Task { await self.session.stop() }   // Quit arrived while starting
+            case .idle:
+                quitWhenIdle = false
+                NSApp.reply(toApplicationShouldTerminate: true)
+            case .starting, .stopping: break
+            }
+        }
         session.onFailure = { [weak self] message in self?.statusItem.showFailure(message) }
 
         registerStartStopHotkey()
     }
 
-    /// Quitting mid-recording finishes both files first.
+    /// Quitting during a Recording Session finishes both files first.
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard case .recording = session?.state else { return .terminateNow }
-        diary.notice(.app, "Quit while recording; stopping the Recording Session first")
-        Task {
-            await session.stop()
-            NSApp.reply(toApplicationShouldTerminate: true)
+        guard let session, session.state != .idle else { return .terminateNow }
+        diary.notice(.app, "Quit during a Recording Session; finishing it first")
+        quitWhenIdle = true
+        if case .recording = session.state {
+            Task { await session.stop() }
         }
         return .terminateLater
     }

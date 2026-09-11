@@ -19,6 +19,7 @@ final class StatusItemController: NSObject {
     override init() {
         super.init()
         let menu = NSMenu()
+        menu.autoenablesItems = false   // the toggle row is enabled and disabled by hand while starting and stopping
         toggleItem.target = self
         menu.addItem(toggleItem)
         hotkeyTakenItem.isEnabled = false
