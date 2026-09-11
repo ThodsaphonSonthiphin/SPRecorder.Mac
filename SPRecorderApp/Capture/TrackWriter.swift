@@ -8,6 +8,8 @@ import SPRecorderCore
 final class TrackWriter: @unchecked Sendable {
     let url: URL
     let trackName: String
+    /// The bitrate actually used: the requested one, or the nearest the encoder offers at this sample rate.
+    let bitrateKbps: Int
     private let writer: AVAssetWriter
     private let input: AVAssetWriterInput
     private(set) var appendedBuffers = 0
@@ -22,14 +24,15 @@ final class TrackWriter: @unchecked Sendable {
         }
         self.url = url
         self.trackName = trackName
-        try? FileManager.default.removeItem(at: url)
+        let bitrate = Self.supportedBitrate(requestedKbps: bitrateKbps, sampleRate: asbd.mSampleRate)
+        self.bitrateKbps = bitrate / 1000
         writer = try AVAssetWriter(outputURL: url, fileType: .m4a)
         writer.movieFragmentInterval = CMTime(seconds: 2, preferredTimescale: 600)
         input = AVAssetWriterInput(mediaType: .audio, outputSettings: [
             AVFormatIDKey: kAudioFormatMPEG4AAC,
             AVSampleRateKey: asbd.mSampleRate,
             AVNumberOfChannelsKey: 1,
-            AVEncoderBitRateKey: bitrateKbps * 1000,
+            AVEncoderBitRateKey: bitrate,
         ], sourceFormatHint: format)
         input.expectsMediaDataInRealTime = true
         guard writer.canAdd(input) else {
@@ -53,12 +56,32 @@ final class TrackWriter: @unchecked Sendable {
         }
     }
 
+    /// The writer's error once it has failed; nil while it is writing.
+    var failure: (any Error)? {
+        writer.status == .failed ? (writer.error ?? CaptureError.failed("The \(trackName) stopped writing.")) : nil
+    }
+
     func finish() async throws {
         input.markAsFinished()
         await writer.finishWriting()
         guard writer.status == .completed else {
             throw CaptureError.failed("The \(trackName) could not be finished: \(writer.error?.localizedDescription ?? "unknown error")")
         }
+    }
+
+    /// The requested bitrate if the AAC encoder offers it for mono at this sample rate, else the
+    /// highest offered below it, else the lowest offered. A Bluetooth headset microphone can arrive
+    /// at 16 kHz, where 64 kbps is refused (measured: -11861) and 48 kbps is the most offered.
+    static func supportedBitrate(requestedKbps: Int, sampleRate: Double) -> Int {
+        let requested = requestedKbps * 1000
+        guard let pcm = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: 1, interleaved: false),
+              let aac = AVAudioFormat(settings: [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: sampleRate, AVNumberOfChannelsKey: 1]),
+              let converter = AVAudioConverter(from: pcm, to: aac),
+              let offered = converter.applicableEncodeBitRates?.map(\.intValue).sorted(),
+              let lowest = offered.first
+        else { return requested }
+        if offered.contains(requested) { return requested }
+        return offered.last(where: { $0 < requested }) ?? lowest
     }
 
     private static func containsSound(_ buffer: CMSampleBuffer) -> Bool {

@@ -101,13 +101,16 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
                 diary.warning(.systemTrack, "Capture stream did not stop cleanly: \(Self.describe(error))")
             }
         }
-        // stopCapture has returned, so no more buffers arrive; take the writers off the queue.
+        // stopCapture has returned; disarm everything so a late buffer cannot start a new writer, then take the writers off the queue.
         let (systemWriter, micWriter) = queue.sync { () -> (TrackWriter?, TrackWriter?) in
             let writers = (system, mic)
             stream = nil
             system = nil
             mic = nil
             onInterrupted = nil
+            systemTrackURL = nil
+            micTrackURL = nil
+            sessionStart = nil
             return writers
         }
 
@@ -142,11 +145,24 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
         if sessionStart == nil { sessionStart = sampleBuffer.presentationTimeStamp }
         if type == .audio {
             system = system ?? makeWriter(name: "System track", category: .systemTrack, url: systemTrackURL, first: sampleBuffer)
-            system?.append(sampleBuffer)
+            append(sampleBuffer, to: system, name: "System track", category: .systemTrack)
         } else {
             mic = mic ?? makeWriter(name: "Mic track", category: .micTrack, url: micTrackURL, first: sampleBuffer)
-            mic?.append(sampleBuffer)
+            append(sampleBuffer, to: mic, name: "Mic track", category: .micTrack)
         }
+    }
+
+    /// Appends, and the first time a track's writer has failed, stops the session: a full disk or a
+    /// changed input format would otherwise look like dropped buffers until stop.
+    private func append(_ buffer: CMSampleBuffer, to writer: TrackWriter?, name: String, category: DiaryCategory) {
+        guard let writer, !failedTracks.contains(name) else { return }
+        writer.append(buffer)
+        guard let error = writer.failure else { return }
+        failedTracks.insert(name)
+        let reason = CaptureError.failed("The \(name) stopped writing: \(error.localizedDescription)")
+        diary.error(category, reason.plainWords)
+        onInterrupted?(reason)
+        onInterrupted = nil
     }
 
     private func makeWriter(name: String, category: DiaryCategory, url: URL?, first: CMSampleBuffer) -> TrackWriter? {
@@ -155,7 +171,11 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
             diary.notice(category, "\(name) audio: \(Int(asbd.mSampleRate)) Hz, \(asbd.mChannelsPerFrame) channel(s), writing \(url.lastPathComponent)")
         }
         do {
-            return try TrackWriter(url: url, trackName: name, format: format, bitrateKbps: bitrate, sessionStart: sessionStart)
+            let writer = try TrackWriter(url: url, trackName: name, format: format, bitrateKbps: bitrate, sessionStart: sessionStart)
+            if writer.bitrateKbps != bitrate {
+                diary.notice(category, "\(name): \(bitrate) kbps is not offered at this sample rate; using \(writer.bitrateKbps) kbps")
+            }
+            return writer
         } catch {
             failedTracks.insert(name)
             let reason = CaptureError(error)
