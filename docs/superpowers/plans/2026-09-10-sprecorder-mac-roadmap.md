@@ -51,7 +51,7 @@ writer must set `movieFragmentInterval` from the start, so Plan 2 does not rewor
 
 **Facts already verified on this Mac (2026-09-10):** macOS 26.6.2 arm64; Xcode 26.6;
 Swift 6.3.3; no code-signing identity; GitHub `macos-26` runner default Xcode 26.6.
-**Unverified, to confirm in Plan 1:** `xcodebuild test -scheme SPRecorderCore -destination 'platform=macOS'`.
+**Confirmed in Plan 1:** `xcodebuild test -scheme SPRecorderCore -destination 'platform=macOS'` (see `sprecorder-mac-0007` amendment); first-demo results in `2026-09-10-plan-1-first-demo-results.md`.
 
 ## Execution
 
