@@ -33,7 +33,7 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
         // Asked lazily, when recording first starts (sprecorder-mac-0006). A refusal found here
         // is certain; a grant is not, so capture itself is still the proof.
         guard await AVCaptureDevice.requestAccess(for: .audio) else {
-            diary.error(.permissions, "Microphone access is refused")
+            diary.error(.permissions, "Microphone access is refused; a running SPRecorder keeps this answer, so allowing it in System Settings takes effect after reopening")
             throw CaptureError.microphoneNotAllowed
         }
 
@@ -127,7 +127,9 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
                     diary.warning(category, "\(name) dropped \(writer.droppedBuffers) buffers; the file has short gaps")
                 }
                 if !writer.heardSound {
-                    diary.warning(category, "\(name) is completely silent; if this is the Mic track, the microphone may not be allowed")
+                    diary.warning(category, category == .micTrack
+                        ? "\(name) is completely silent; the microphone may be muted or not allowed"
+                        : "\(name) is completely silent; the computer played no sound during the Recording Session")
                 }
             } catch {
                 let reason = CaptureError(error)

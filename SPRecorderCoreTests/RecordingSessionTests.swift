@@ -92,6 +92,17 @@ struct RecordingSessionTests {
         #expect(failures == ["Not recording. SPRecorder is not allowed to record computer audio."])
     }
 
+    @Test func aRefusedMicrophoneSaysToReopenAfterAllowingIt() async {
+        capture.startError = .microphoneNotAllowed
+        var failures: [String] = []
+        let session = makeSession { clock }
+        session.onFailure = { failures.append($0) }
+
+        await session.start()
+
+        #expect(failures == ["Not recording. SPRecorder is not allowed to use the microphone. If you have just allowed it in System Settings, quit and reopen SPRecorder."])
+    }
+
     @Test func aFolderThatCannotBeCreatedIsReported() async throws {
         let blocker = home.appendingPathComponent("Movies")
         FileManager.default.createFile(atPath: blocker.path, contents: nil)   // a file where the folder should be

@@ -13,7 +13,8 @@ public enum CaptureError: Error, Equatable, Sendable {
 
     public var plainWords: String {
         switch self {
-        case .microphoneNotAllowed: "SPRecorder is not allowed to use the microphone."
+        // A running SPRecorder keeps macOS's first answer, so a switch turned on later needs a reopen (first demo, Step 6).
+        case .microphoneNotAllowed: "SPRecorder is not allowed to use the microphone. If you have just allowed it in System Settings, quit and reopen SPRecorder."
         case .computerAudioNotAllowed: "SPRecorder is not allowed to record computer audio."
         case .failed(let detail): detail
         }
