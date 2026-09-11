@@ -64,6 +64,18 @@ struct SettingsStoreTests {
         #expect(try String(contentsOf: url, encoding: .utf8) == #"{ "SplitSizeMb": 0 }"#)   // her file is not rewritten
     }
 
+    @Test func aValueThatCannotBeReadIsNamedInAWarning() throws {
+        let dir = try makeTemporaryDirectory()
+        let url = dir.appendingPathComponent("settings.json")
+        try Data(#"{ "AudioBitrateKbps": "96" }"#.utf8).write(to: url)
+        let sink = RecordingDiarySink()
+
+        let store = SettingsStore(fileURL: url, diary: Diary(sinks: [sink]))
+
+        #expect(store.current.audioBitrateKbps == 64)
+        #expect(sink.lines(.warning) == ["Some settings in settings.json could not be read and use their defaults: AudioBitrateKbps"])
+    }
+
     @Test func aFileThatIsNotJSONIsLeftAloneAndTheDefaultsAreUsed() throws {
         let dir = try makeTemporaryDirectory()
         let url = dir.appendingPathComponent("settings.json")

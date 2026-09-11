@@ -1,9 +1,10 @@
 import Carbon
 import SPRecorderCore
 
-/// Global hotkeys through Carbon's `RegisterEventHotKey`: the only macOS mechanism that is
-/// exclusive, needs no permission, and works with no window (research #5). A combination
-/// another app already owns fails to register — that is an Inactive hotkey.
+/// Global hotkeys through Carbon's `RegisterEventHotKey`: needs no permission and works with no
+/// window (research #5). It is not exclusive: on macOS 26.6.2 a second process registered the
+/// same combination with `noErr`, and every press reached both (first-demo results, Steps 11–12).
+/// So `noErr` does not prove the combination is free; detecting an Inactive hotkey is left to Plans 3 and 6.
 @MainActor
 final class CarbonHotkeyCenter {
     private var actions: [UInt32: () -> Void] = [:]
@@ -11,7 +12,8 @@ final class CarbonHotkeyCenter {
     private var handler: EventHandlerRef?
     private var nextID: UInt32 = 1
 
-    /// Returns `noErr` when registered; any other status means the hotkey is inactive.
+    /// Returns `noErr` when registered, which does not prove no other app holds the combination;
+    /// any other status means the hotkey is inactive.
     func register(_ spec: HotkeySpec, action: @escaping () -> Void) -> OSStatus {
         installHandlerIfNeeded()
         let id = nextID

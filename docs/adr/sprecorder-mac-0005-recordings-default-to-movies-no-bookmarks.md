@@ -61,5 +61,5 @@ The default pattern itself is deliberately **not** decided here; see the
 SPRecorder (`com.sprecorder.mac`, ad-hoc signed, macOS 26.6.2) created
 `~/Movies/SPRecorder` and a Session folder inside it on its first Recording Session.
 A "would like to access files in your Movies folder" box did not appear: tccd logged no
-`MoviesFolder` request between 07:29 and 09:00, across 11 Session folders.
+`MoviesFolder` request between 07:29 and 09:35, across 11 Session folders.
 Plan 1 first-demo results: `docs/superpowers/plans/2026-09-10-plan-1-first-demo-results.md`.

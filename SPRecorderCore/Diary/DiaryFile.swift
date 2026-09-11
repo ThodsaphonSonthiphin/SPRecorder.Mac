@@ -78,8 +78,11 @@ public final class DiaryFile: DiarySink, @unchecked Sendable {
                     FileManager.default.createFile(atPath: url.path, contents: nil)
                 }
                 do {
-                    handle = try FileHandle(forWritingTo: url)
-                    try handle?.seekToEnd()
+                    // O_APPEND: every write lands at the end of the file, even when another process
+                    // writes the same day's file (first-demo results, Step 12).
+                    let descriptor = open(url.path, O_WRONLY | O_APPEND | O_CREAT, 0o644)
+                    guard descriptor >= 0 else { throw POSIXError(POSIXErrorCode(rawValue: errno) ?? .EIO) }
+                    handle = FileHandle(fileDescriptor: descriptor, closeOnDealloc: true)
                 } catch {
                     messages.append("Could not open the Diary file \(url.path): \(error.localizedDescription)")
                     handle = nil

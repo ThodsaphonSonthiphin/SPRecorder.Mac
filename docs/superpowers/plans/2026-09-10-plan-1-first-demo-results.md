@@ -225,7 +225,9 @@ plus the Diary fragments and the Session folders give five moments:
 - `settings.json` unchanged since its creation at 07:31:25. The Diary folder holds only `2026-09-11.log`.
 - `~/Movies` neighbours `CapCut` (Sep 4) and `TV` (Sep 5) unchanged.
 
-### Movies folder (measured across the whole demo, 07:29–09:00)
+### Movies folder (measured across the whole demo, 07:29–09:35)
 
 - tccd events containing `MoviesFolder`: **0**. No Movies-folder box was asked for while creating and writing Session folders
   under `~/Movies/SPRecorder`.
+- First measured over 07:29–09:00, which held only two kept Session folders (`07.41`, `08.58`) and five removed on refusal.
+  Re-measured over 07:29–09:35, after the final review asked, so the window covers all 11 kept Session folders: still **0**.

@@ -111,4 +111,4 @@ The reason that sentence gave â€” the Core may not import a platform framework â
 the file sink, which is Foundation file I/O and passes the import guard of `sprecorder-mac-0007`.
 And `sprecorder-mac-0018`'s leak test must read the Diary file that a faked Recording Session
 wrote; the Core test target can do that only if the file sink is Core code. The seam is
-unchanged: the Core declares `DiarySink`, and the directory is injected, as 0018 requires.
+unchanged: the Core declares `DiarySink`, and the directory is injected, as `sprecorder-mac-0018` requires.

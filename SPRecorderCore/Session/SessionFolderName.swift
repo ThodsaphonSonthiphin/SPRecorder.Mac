@@ -62,7 +62,7 @@ public enum SessionFolderName {
 
     /// Pinned to en_US_POSIX and the Gregorian calendar: a Mac set to Thailand would otherwise
     /// write the Buddhist year, 2569 (sprecorder-mac-0019).
-    private static func formatter(_ format: String, _ timeZone: TimeZone) -> DateFormatter {
+    static func formatter(_ format: String, _ timeZone: TimeZone) -> DateFormatter {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
         f.calendar = Calendar(identifier: .gregorian)

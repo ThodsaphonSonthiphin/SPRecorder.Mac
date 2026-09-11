@@ -99,7 +99,23 @@ struct DiaryFileTests {
         #expect(text.hasSuffix("[notice] App: after relaunch\n"))
     }
 
-    @Test func failuresToWriteTheDiaryAreReportedOnce() throws {
+    @Test func twoDiaryFilesOnTheSameDayKeepEachOthersLines() throws {
+        // Two running copies of the app once overwrote each other's lines (first-demo results, Step 12).
+        let dir = try makeTemporaryDirectory()
+        let when = TestTime.date(2026, 9, 10, 8, 0)
+        let first = DiaryFile(directory: dir, timeZone: TestTime.bangkok, now: when)
+        let second = DiaryFile(directory: dir, timeZone: TestTime.bangkok, now: when)
+
+        first.write(DiaryEntry(date: when, level: .notice, category: .app, message: "first one"))
+        second.write(DiaryEntry(date: when, level: .notice, category: .app, message: "second one"))
+        first.write(DiaryEntry(date: when, level: .notice, category: .app, message: "first two"))
+
+        let text = try String(contentsOf: dir.appendingPathComponent("2026-09-10.log"), encoding: .utf8)
+        let messages = text.split(separator: "\n").map { $0.components(separatedBy: "App: ").last ?? "" }
+        #expect(messages == ["first one", "second one", "first two"])
+    }
+
+    @Test func failuresToCreateTheFolderOrOpenTheFileAreEachReportedOnce() throws {
         let dir = try makeTemporaryDirectory()
         let blockedPath = dir.appendingPathComponent("Logs", isDirectory: true)
         // Create a file at the path where the directory should be created

@@ -11,7 +11,10 @@ struct SessionFolderNameTests {
     }
 
     @Test func theYearIsGregorianAndTheWeekdayEnglishWhateverTheMacsRegion() {
-        // The formatter is pinned, so this holds on a Mac set to Thailand (Buddhist year 2569).
+        // Assert the pinning itself: on a Mac already set to the Gregorian calendar, the name alone could not fail.
+        let formatter = SessionFolderName.formatter("yyyy EEEE", TestTime.bangkok)
+        #expect(formatter.locale.identifier == "en_US_POSIX")
+        #expect(formatter.calendar.identifier == .gregorian)
         let name = SessionFolderName.make(pattern: "{timestamp:yyyy EEEE}", startedAt: startedAt, timeZone: TestTime.bangkok)
         #expect(name == "2026 Thursday")
     }

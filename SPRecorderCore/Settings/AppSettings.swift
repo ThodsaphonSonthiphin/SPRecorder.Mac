@@ -67,13 +67,32 @@ public struct AppSettings: Codable, Equatable, Sendable {
         case showKeystrokes = "ShowKeystrokes"
     }
 
+    /// Collects the keys `init(from:)` found but could not read, so the settings store can name
+    /// them in the Diary instead of falling back silently. Pass one in the decoder's `userInfo`.
+    public final class UnreadableKeys: @unchecked Sendable {
+        private let lock = NSLock()
+        private var _names: [String] = []
+        public init() {}
+        public var names: [String] { lock.withLock { _names } }
+        func add(_ name: String) { lock.withLock { _names.append(name) } }
+    }
+
+    public static let unreadableKeysInfoKey = CodingUserInfoKey(rawValue: "SPRecorder.unreadableKeys")!
+
     /// A hand-edited file is the expected support path, so a missing key or a value of the
     /// wrong type falls back to that one setting's default instead of failing the whole file.
+    /// A value of the wrong type is also listed in `UnreadableKeys`, when the decoder carries one.
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         let d = AppSettings()
+        let unreadable = decoder.userInfo[AppSettings.unreadableKeysInfoKey] as? UnreadableKeys
         func value<T: Decodable>(_ key: CodingKeys, _ fallback: T) -> T {
-            ((try? c.decodeIfPresent(T.self, forKey: key)) ?? nil) ?? fallback
+            do {
+                return try c.decodeIfPresent(T.self, forKey: key) ?? fallback
+            } catch {
+                unreadable?.add(key.rawValue)
+                return fallback
+            }
         }
         outputDirectory = value(.outputDirectory, d.outputDirectory)
         fileNamePattern = value(.fileNamePattern, d.fileNamePattern)

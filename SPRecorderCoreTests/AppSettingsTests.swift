@@ -49,6 +49,14 @@ struct AppSettingsTests {
         #expect(s.splitSizeMb == 180)
     }
 
+    @Test func theKeysOfValuesThatCannotBeReadAreListed() throws {
+        let unreadable = AppSettings.UnreadableKeys()
+        let decoder = JSONDecoder()
+        decoder.userInfo[AppSettings.unreadableKeysInfoKey] = unreadable
+        _ = try decoder.decode(AppSettings.self, from: Data(#"{ "AudioBitrateKbps": "96", "SplitSizeMb": 180, "Hotkey": null }"#.utf8))
+        #expect(unreadable.names == ["AudioBitrateKbps"])
+    }
+
     @Test func unknownKeysAreIgnored() throws {
         let s = try decode(#"{ "Mp3BitrateKbps": 128, "ScreenMonitorDeviceName": "\\\\.\\DISPLAY2" }"#)
         #expect(s == AppSettings())

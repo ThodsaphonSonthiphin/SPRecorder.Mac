@@ -65,7 +65,7 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
             try newStream.addStreamOutput(self, type: .microphone, sampleHandlerQueue: queue)
             try newStream.addStreamOutput(self, type: .screen, sampleHandlerQueue: queue)
         } catch {
-            diary.error(.systemTrack, "Could not attach to the capture stream: \(Self.describe(error))")
+            diary.error(.systemTrack, "Could not attach to ScreenCaptureKit: \(Self.describe(error))")
             throw Self.translate(error)
         }
 
@@ -84,7 +84,7 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
         do {
             try await newStream.startCapture()
         } catch {
-            diary.error(.systemTrack, "Capture stream did not start: \(Self.describe(error))")
+            diary.error(.systemTrack, "Capture did not start: \(Self.describe(error))")
             queue.sync { self.onInterrupted = nil }
             throw Self.translate(error)
         }
@@ -98,7 +98,7 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
             do {
                 try await running.stopCapture()
             } catch {
-                diary.warning(.systemTrack, "Capture stream did not stop cleanly: \(Self.describe(error))")
+                diary.warning(.systemTrack, "Capture did not stop cleanly: \(Self.describe(error))")
             }
         }
         // stopCapture has returned; disarm everything so a late buffer cannot start a new writer, then take the writers off the queue.
@@ -170,7 +170,7 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
     private func makeWriter(name: String, category: DiaryCategory, url: URL?, first: CMSampleBuffer) -> TrackWriter? {
         guard let url, let format = first.formatDescription, let sessionStart, !failedTracks.contains(name) else { return nil }
         if let asbd = CMAudioFormatDescriptionGetStreamBasicDescription(format)?.pointee {
-            diary.notice(category, "\(name) audio: \(Int(asbd.mSampleRate)) Hz, \(asbd.mChannelsPerFrame) channel(s), writing \(url.lastPathComponent)")
+            diary.notice(category, "\(name) audio: \(Int(asbd.mSampleRate)) Hz, \(asbd.mChannelsPerFrame == 1 ? "mono" : "\(asbd.mChannelsPerFrame) ch"), writing \(url.lastPathComponent)")
         }
         do {
             let writer = try TrackWriter(url: url, trackName: name, format: format, bitrateKbps: bitrate, sessionStart: sessionStart)
@@ -191,7 +191,7 @@ final class ScreenCaptureAudioRecorder: NSObject, AudioCapturing, SCStreamOutput
     // MARK: SCStreamDelegate
 
     func stream(_ stream: SCStream, didStopWithError error: any Error) {
-        diary.error(.systemTrack, "Capture stream stopped by itself: \(Self.describe(error))")
+        diary.error(.systemTrack, "ScreenCaptureKit stopped capture by itself: \(Self.describe(error))")
         queue.async {
             let callback = self.onInterrupted
             self.onInterrupted = nil

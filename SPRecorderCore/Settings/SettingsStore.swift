@@ -29,7 +29,13 @@ public final class SettingsStore: @unchecked Sendable {
         }
         do {
             let data = try Data(contentsOf: fileURL)
-            let loaded = try JSONDecoder().decode(AppSettings.self, from: data)
+            let unreadable = AppSettings.UnreadableKeys()
+            let decoder = JSONDecoder()
+            decoder.userInfo[AppSettings.unreadableKeysInfoKey] = unreadable
+            let loaded = try decoder.decode(AppSettings.self, from: data)
+            if !unreadable.names.isEmpty {
+                diary.warning(.settings, "Some settings in \(fileURL.lastPathComponent) could not be read and use their defaults: \(unreadable.names.joined(separator: ", "))")
+            }
             let valid = loaded.validated()
             if valid != loaded {
                 diary.warning(.settings, "Some settings in \(fileURL.lastPathComponent) were out of range and were corrected in memory")

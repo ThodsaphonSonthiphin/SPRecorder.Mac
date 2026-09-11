@@ -94,3 +94,15 @@ How the project is built, so it is not rediscovered:
   message above; removing it passed. `ENABLE_USER_SCRIPT_SANDBOXING = NO`, so the script may
   read the whole Core folder.
 - Signing is ad-hoc (`CODE_SIGN_IDENTITY = "-"`) until `sprecorder-mac-0040`'s certificate exists.
+
+---
+
+## Amendment — 2026-09-11, measured. The import guard is an allowlist.
+
+The denylist `grep` above let four imports through: `@preconcurrency import AVFoundation`,
+`public import AppKit`, `import CoreMedia` and `import os` each passed it, and Swift 6 compiled
+them. `@preconcurrency import` is the usual Swift 6 way to import AVFoundation or
+ScreenCaptureKit, so the gap was the likely one. `scripts/forbid-core-platform-imports.sh` now
+finds every `import` line in `SPRecorderCore/`, whatever attribute or access level comes before
+it, and fails the build unless the imported module is Foundation. Each of the four lines fails
+it; `import struct Foundation.Date`, comments, string literals and the Core as it stands pass.
