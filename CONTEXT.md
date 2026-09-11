@@ -121,6 +121,16 @@ least one Marker. It plays the recording and lists every Marker; clicking one ju
 the player to that moment. The browser is the player.
 _Avoid_: viewer, web player, player page
 
+## Transcript
+
+**Transcript**:
+The text of what was said in a Recording Session, written into its Session folder
+after stop. Each turn is one paragraph with its time and its voice: *Me* for the
+Mic track, *Speaker 1*, *Speaker 2* … for the voices told apart inside the System
+track. Markers sit in it at their time. It is the meeting, so it never goes into a
+Problem report. On disk: *Transcript.md*.
+_Avoid_: words file, captions, subtitles, minutes, meeting notes
+
 ## Support
 
 **Diary**:

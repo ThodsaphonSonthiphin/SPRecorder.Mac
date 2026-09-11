@@ -173,3 +173,8 @@ dropped, the splitting capability is rewritten — but no ADR yet specifies how 
 `.m4a` is split, and this ADR's `Computer audio 001.m4a` naming assumes it exists.
 The Splitting tab and its `SplitMode` / `SplitTimeMinutes` / `SplitSizeMb`
 settings (`sprecorder-mac-0004`) assume it too.
+
+## Amendment 2026-09-11 — one more file
+
+`sprecorder-mac-0042` adds a row to the file table above: **Transcript → `Transcript.md`**.
+The glossary term and the file name are the same word.
