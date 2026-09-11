@@ -140,11 +140,19 @@ window or the Dock icon, by Choose a File…, or by Finder's Open With; files ar
 one at a time, in a list that shows what is happening to each.
 _Avoid_: the separate app, the transcription app, the transcriber
 
+**Hand-off**:
+SPRecorder giving a finished Recording Session to SPTranscriber after stop, so the
+Transcript is made with nobody pressing anything. It passes the whole Session folder,
+it shows nothing on screen, and a Recording Session records and saves whether or not
+SPTranscriber is there.
+_Avoid_: hand-over, auto-transcribe, trigger, pipeline
+
 ## Support
 
 **Diary**:
-The app's own day-by-day record of what it did and what went wrong, kept for seven
-days and then deleted. It records everything except keystrokes.
+An app's own day-by-day record of what it did and what went wrong, kept for seven
+days and then deleted. It records everything except keystrokes. SPRecorder and
+SPTranscriber each keep their own.
 _Avoid_: log file, logs, trace, history
 
 **Check my setup**:
@@ -155,8 +163,10 @@ _Avoid_: self-test, self-check, diagnostics, test recording
 
 **Problem report**:
 A file the user sends the developer when something goes wrong. It carries facts
-about their recordings (the Diary, settings, crash reports and a list of recent
-Session folders) but never a recording itself.
+about their recordings (both apps' Diaries, settings, crash reports and a list of
+recent Session folders) but never a recording itself, and never a Transcript. It is
+started in one place and gathers both apps, so the user never has to know which of
+them failed.
 _Avoid_: diagnostic bundle, support bundle, crash report, logs
 
 **Private copy**:
