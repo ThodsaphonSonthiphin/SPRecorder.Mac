@@ -98,3 +98,17 @@ unified-log extracts it is a bonus on top of our own file, never a substitute fo
   untestable because it constructs its own infrastructure — logged without dragging AppKit
   into Core.
 - What the file contains, and for how long, is `sprecorder-mac-0014`.
+
+---
+
+## Amendment — 2026-09-10. The file sink lives in the Core.
+
+The Consequences above say the app target supplies both the `os_log` and the file
+implementations. Plan 1 puts the **file sink (`DiaryFile`) in `SPRecorderCore`** and keeps only
+the `os_log` sink (`OSLogSink`) in the app.
+
+The reason that sentence gave — the Core may not import a platform framework — does not reach
+the file sink, which is Foundation file I/O and passes the import guard of `sprecorder-mac-0007`.
+And `sprecorder-mac-0018`'s leak test must read the Diary file that a faked Recording Session
+wrote; the Core test target can do that only if the file sink is Core code. The seam is
+unchanged: the Core declares `DiarySink`, and the directory is injected, as `sprecorder-mac-0018` requires.

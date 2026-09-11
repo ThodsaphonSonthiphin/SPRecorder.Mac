@@ -28,6 +28,47 @@ Plan 1 is written: `2026-09-10-plan-1-foundation-and-first-demo.md`.
 Not built: HDR detection and warning (dropped by research #9); Google Drive upload (fog);
 public install/update (fog, returned 2026-09-10); external monitors (deferred, 0021).
 
+## Carried from Plan 1 — read before writing the plan named
+
+Found while building and demoing Plan 1 (`2026-09-10-plan-1-first-demo-results.md`), deliberately not fixed there.
+
+**Plan 2 — Recording that survives**
+- Allow only one running copy: a second launch hands over to the running one and quits. Two copies both receive every
+  hotkey press, race for the same Session folder, and would make at-launch recovery treat a live session as crashed (demo Step 12).
+- A track that received no buffers is only a Diary warning at stop, and the session records a clean stop; the Mixed file needs both tracks.
+- On built-in speakers the Mic track also holds the other participants (acoustic pickup, no echo removal), so the Mixed file
+  would carry them twice, a few milliseconds apart. With earbuds the Mic track held only the voice (demo Steps 9 and 16).
+  Decide: advise headphones, remove echo, or accept.
+
+**Plan 3 — Markers (and the Failure notice)**
+- One Track writer failing, even mid-meeting, ends the whole Recording Session (`ScreenCaptureAudioRecorder.append` → `onInterrupted`).
+  Decide whether the healthy track keeps recording behind a Failure notice.
+- A mid-session writer failure can produce two `onFailure` messages and two Diary errors for one failure.
+
+**Plans 3 and 6 — hotkeys**
+- `RegisterEventHotKey` returns `noErr` for a combination another process already holds, and every press reaches both
+  (demo Steps 11–12). The Inactive hotkey (`sprecorder-mac-0010`, `sprecorder-mac-0017`) needs another way to be detected.
+- `HotkeySpec.init(modifiers:key:)` does not validate `key`; only `parse` does. The hotkey capture UI must build specs through `parse`.
+
+**Plan 6 — Menu bar + Settings**
+- A refused start shows only as a grey row inside the menu — to the person, "nothing happened" (demo Step 6).
+  `sprecorder-mac-0006` wants the missing permission named and its System Settings pane opened.
+- `onFailure` passes only a String; the icon badge and the permission name need the `CaptureError`.
+- Validate `FileNamePattern` with `SessionFolderName.make`'s regex: `{timestamp:}` and an unclosed `{timestamp` pass `validated()` and name folders with no time.
+- `SettingsStore.save` writes the shared `.tmp` outside its lock; the Settings window must not save concurrently.
+- `AudioBitrateKbps` is not clamped by `validated()`; the bitrate picker absorbs any value today.
+- `toggleRecording()` clears the failure row even when the press is ignored (for example during Stopping…).
+
+**Next hands-on session**
+- Switch the input to earbuds during a recording, and lock the screen or let the display sleep: either could end a Recording Session through `onInterrupted`. Unmeasured.
+
+**Small, any time**
+- `tests.yml`: a read-only `permissions:` block for `GITHUB_TOKEN`.
+- `DiaryFile` close-failure path rebuilds the day name by parse and format; `openDay ?? "unknown"` is enough.
+- Tests: `outputDirectoryURL(home:)` with exactly `"~"`; the folder-cannot-be-created test's Diary text; `removeIfEmpty`'s `try?` branches;
+  the Diary write-failure-once branch (no portable way found to force a write failure).
+- `TrackWriter.containsSound` treats an unreadable buffer as silence; `InstallEventHandler`'s status and `NSWorkspace.open`'s result are ignored.
+
 ## Inputs Plan 1 must be written from — read these, not memory
 
 **ADRs:** 0001, 0002 (+ correction), 0003 (+ amendment), 0004, 0005, 0006, 0007, 0009, 0013,
@@ -51,7 +92,7 @@ writer must set `movieFragmentInterval` from the start, so Plan 2 does not rewor
 
 **Facts already verified on this Mac (2026-09-10):** macOS 26.6.2 arm64; Xcode 26.6;
 Swift 6.3.3; no code-signing identity; GitHub `macos-26` runner default Xcode 26.6.
-**Unverified, to confirm in Plan 1:** `xcodebuild test -scheme SPRecorderCore -destination 'platform=macOS'`.
+**Confirmed in Plan 1:** `xcodebuild test -scheme SPRecorderCore -destination 'platform=macOS'` (see `sprecorder-mac-0007` amendment); first-demo results in `2026-09-10-plan-1-first-demo-results.md`.
 
 ## Execution
 

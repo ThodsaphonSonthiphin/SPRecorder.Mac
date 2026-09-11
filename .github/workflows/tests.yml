@@ -1,0 +1,24 @@
+# Builds both targets and runs the Core suite on a fresh Mac for every push
+# (sprecorder-mac-0016). The Core suite is all fakes, so it needs no microphone,
+# no screen and no permission (sprecorder-mac-0015).
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Show the Xcode in use
+        run: xcodebuild -version
+
+      - name: Build the app (builds the Core first, with its import guard)
+        run: xcodebuild build -project SPRecorder.xcodeproj -scheme SPRecorderApp -destination 'platform=macOS'
+
+      - name: Run the Core tests
+        run: xcodebuild test -project SPRecorder.xcodeproj -scheme SPRecorderCore -destination 'platform=macOS'
