@@ -10,7 +10,7 @@ The domain glossary is this repo's own [`CONTEXT.md`](CONTEXT.md). It started fr
 Windows repo's `CONTEXT.md` and is corrected wherever the Mac app differs (no MP3, the
 built-in screen, a Session folder for every Recording Session) and extended with the
 Mac-only terms: Diary, Check my setup, Problem report, Private copy, Part, Failure
-notice, Transcript. Use its terms, and the words under *Avoid* nowhere. Add or correct a term in
+notice, Transcript, SPTranscriber. Use its terms, and the words under *Avoid* nowhere. Add or correct a term in
 the same commit as the ADR that settles it. See `sprecorder-mac-0039`.
 
 ## ADRs

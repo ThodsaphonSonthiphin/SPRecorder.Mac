@@ -124,14 +124,21 @@ _Avoid_: viewer, web player, player page
 ## Transcript
 
 **Transcript**:
-The text of what was said in an audio or video file, made by the separate
-Transcript-making app — for any file, and for every Recording Session, which
-SPRecorder hands to that app after stop so it lands in the Session folder. Each
+The text of what was said in an audio or video file, made by SPTranscriber — for
+any file, and for every Recording Session, which SPRecorder hands to SPTranscriber
+after stop so it lands in the Session folder. Each
 turn is one paragraph with its time and its voice: *Speaker 1*, *Speaker 2* … for
 the voices told apart, plus *Me* for the Mic track when the file is a Recording
 Session. Markers sit in it at their time. It is the meeting, so it never goes into
 a Problem report. On disk, in a Session folder: *Transcript.md*.
 _Avoid_: words file, captions, subtitles, minutes, meeting notes
+
+**SPTranscriber**:
+The second app in this repo. A normal Mac app with a window and a Dock icon that
+turns any audio or video file into a Transcript. A file gets in by dropping it on the
+window or the Dock icon, by Choose a File…, or by Finder's Open With; files are made
+one at a time, in a list that shows what is happening to each.
+_Avoid_: the separate app, the transcription app, the transcriber
 
 ## Support
 

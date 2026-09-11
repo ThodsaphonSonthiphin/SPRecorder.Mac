@@ -58,3 +58,8 @@ Recording Session.
 - **New tickets on map #36:** how SPRecorder hands a Recording Session over (and what happens
   when the separate app is missing or closed); which files it opens and where their Transcript
   goes; what the separate app is called and looks like; where the shared code lives.
+
+## Amendment 2026-09-11 — the name
+
+The separate app is **SPTranscriber**, a normal window app you drop a file into
+(`sprecorder-mac-0044`).
