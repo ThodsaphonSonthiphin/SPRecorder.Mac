@@ -124,11 +124,13 @@ _Avoid_: viewer, web player, player page
 ## Transcript
 
 **Transcript**:
-The text of what was said in a Recording Session, written into its Session folder
-after stop. Each turn is one paragraph with its time and its voice: *Me* for the
-Mic track, *Speaker 1*, *Speaker 2* … for the voices told apart inside the System
-track. Markers sit in it at their time. It is the meeting, so it never goes into a
-Problem report. On disk: *Transcript.md*.
+The text of what was said in an audio or video file, made by the separate
+Transcript-making app — for any file, and for every Recording Session, which
+SPRecorder hands to that app after stop so it lands in the Session folder. Each
+turn is one paragraph with its time and its voice: *Speaker 1*, *Speaker 2* … for
+the voices told apart, plus *Me* for the Mic track when the file is a Recording
+Session. Markers sit in it at their time. It is the meeting, so it never goes into
+a Problem report. On disk, in a Session folder: *Transcript.md*.
 _Avoid_: words file, captions, subtitles, minutes, meeting notes
 
 ## Support

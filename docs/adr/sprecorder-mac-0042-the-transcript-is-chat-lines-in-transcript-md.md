@@ -87,3 +87,12 @@ the code says *Mixed file* and the disk says *Both voices* (`sprecorder-mac-0019
   - what happens when a Session folder already has a `Transcript.md` and one is made again —
     `manual-start` (#49);
   - what the file says when a service fails part-way — `when-made` (#45).
+
+## Amendment 2026-09-11 — a Transcript can come from any file
+
+`sprecorder-mac-0043` moves Transcript-making into a separate app that opens **any audio or
+video file**, and keeps SPRecorder handing each Recording Session to it after stop. This ADR's
+format holds for every Transcript. Its **Name** and **Title** rules, and its **Markers**, describe
+a Recording Session only. For a file from anywhere else: every voice is Speaker 1, 2, 3 (there
+is no Mic track to give `Me`), times count from the start of the file, and where the
+Transcript is written and what its title says are not yet decided (a ticket on map #36).
